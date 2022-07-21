@@ -128,3 +128,6 @@ Server/.yarn/unplugged
 Server/.yarn/build-state.yml
 Server/.yarn/install-state.gz
 Server/.pnp.*
+
+# Sever config
+Server/config.js
