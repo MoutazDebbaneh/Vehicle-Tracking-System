@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcryptjs = require("bcryptjs");
 
 const userSchema = mongoose.Schema({
   name: {
@@ -22,13 +23,6 @@ const userSchema = mongoose.Schema({
   password: {
     required: true,
     type: String,
-    validate: {
-      validator: (value) => {
-        const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-        return value.match(re);
-      },
-      message: "Please enter a valid password",
-    },
   },
   address: {
     type: String,
@@ -36,8 +30,21 @@ const userSchema = mongoose.Schema({
   },
   type: {
     type: String,
+    enum: ["user", "admin"],
     default: "user",
   },
+});
+
+userSchema.pre("save", async function (next) {
+  const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  console.log(this.password);
+
+  if (!this.password.match(re)) {
+    const err = new Error("Invalid password");
+    next(err);
+  }
+  this.password = await bcryptjs.hash(this.password, 8);
+  next();
 });
 
 const User = mongoose.model("User", userSchema);

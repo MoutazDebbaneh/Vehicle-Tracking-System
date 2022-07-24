@@ -1,3 +1,7 @@
+####################################################################
+#############################Server#################################
+####################################################################
+
 # Logs
 Server/logs
 Server/*.log
@@ -131,3 +135,56 @@ Server/.pnp.*
 
 # Sever config
 Server/config.js
+
+
+####################################################################
+#############################Client#################################
+####################################################################
+
+# Miscellaneous
+Client/vtracker/*.class
+Client/vtracker/*.log
+Client/vtracker/*.pyc
+Client/vtracker/*.swp
+Client/vtracker/.DS_Store
+Client/vtracker/.atom/
+Client/vtracker/.buildlog/
+Client/vtracker/.history
+Client/vtracker/.svn/
+Client/vtracker/migrate_working_dir/
+
+# IntelliJ related
+Client/vtracker/*.iml
+Client/vtracker/*.ipr
+Client/vtracker/*.iws
+Client/vtracker/.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+Client/vtracker/**/doc/api/
+Client/vtracker/**/ios/Flutter/.last_build_id
+Client/vtracker/.dart_tool/
+Client/vtracker/.flutter-plugins
+Client/vtracker/.flutter-plugins-dependencies
+Client/vtracker/.packages
+Client/vtracker/.pub-cache/
+Client/vtracker/.pub/
+Client/vtracker/build/
+
+# Web related
+Client/vtracker/lib/generated_plugin_registrant.dart
+
+# Symbolication related
+Client/vtracker/app.*.symbols
+
+# Obfuscation related
+Client/vtracker/app.*.map.json
+
+# Android Studio will place build artifacts here
+Client/vtracker/android/app/debug
+Client/vtracker/android/app/profile
+Client/vtracker/android/app/release
