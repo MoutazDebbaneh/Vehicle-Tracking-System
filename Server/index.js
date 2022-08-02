@@ -1,16 +1,17 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 
-const { HOST, PORT, DB } = require("./config");
 const authRouter = require("./routes/auth");
 
 const app = express();
 
 app.use(express.json());
-app.use(authRouter);
+app.use("/api/auth", authRouter);
 
 mongoose
-  .connect(DB)
+  .connect(process.env.DB_URL)
   .then(() => {
     console.log("Connected to DB successfully");
   })
@@ -18,6 +19,6 @@ mongoose
     console.log(e);
   });
 
-app.listen(PORT, HOST, () => {
-  console.log(`Server running on ${HOST}:${PORT}`);
+app.listen(process.env.PORT, process.env.HOST, () => {
+  console.log(`Server running on ${process.env.HOST}:${process.env.PORT}`);
 });
