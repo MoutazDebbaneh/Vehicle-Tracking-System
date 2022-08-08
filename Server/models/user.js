@@ -8,16 +8,19 @@ const userSchema = mongoose.Schema({
     trim: true,
     min: 1,
   },
+
   last_name: {
     required: true,
     type: String,
     trim: true,
     min: 1,
   },
+
   email: {
     required: true,
     type: String,
     trim: true,
+    unique: true,
     validate: {
       validator: (value) => {
         const re =
@@ -27,22 +30,35 @@ const userSchema = mongoose.Schema({
       message: "Please enter a valid email address",
     },
   },
+
   password: {
     required: true,
     type: String,
   },
+
   type: {
     type: String,
     enum: ["user", "admin"],
     default: "user",
   },
+
+  private_rides: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Ride",
+    },
+  ],
+
   refreshToken: {
     type: String,
   },
 });
 
 userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
   const re = /^(?=.*\d)(?=.*[.!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
   if (!this.password.match(re)) {
     const err = new Error("Invalid password");
     next(err);

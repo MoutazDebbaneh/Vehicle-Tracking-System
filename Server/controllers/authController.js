@@ -6,7 +6,10 @@ const User = require("../models/user");
 
 exports.signup = async function (req, res) {
   try {
-    const { first_name, last_name, email, password } = req.body;
+    let { first_name, last_name, email, password } = req.body;
+
+    if (!first_name || !last_name || !email || !password)
+      return res.status(400).json({ error: "Missing required argument(s)" });
 
     email = email.toLowerCase();
 
@@ -35,6 +38,9 @@ exports.signup = async function (req, res) {
 exports.signin = async function (req, res) {
   try {
     const { email, password } = req.body;
+
+    if (!email || !password)
+      return res.status(400).json({ error: "Missing required argument(s)" });
 
     const user = await User.findOne({ email });
 
@@ -106,8 +112,26 @@ exports.authenticateToken = function (req, res, next) {
   });
 };
 
+exports.authenticateAdmin = function (req, res, next) {
+  try {
+    //Should be called after authenticateToken() only
+    const userId = req.userId;
+    User.findById(userId)
+      .exec()
+      .then((doc) => {
+        if (doc.type !== "admin")
+          return res
+            .status(401)
+            .json({ error: "You must be an admin to access this URL" });
+        else next();
+      });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 exports.regenerateAccessToken = async function (req, res) {
-  const { refreshToken, id } = req.body;
+  const { refreshToken } = req.body;
   if (!refreshToken)
     return res
       .status(401)
@@ -132,5 +156,5 @@ exports.regenerateAccessToken = async function (req, res) {
 };
 
 function _generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20s" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "2h" });
 }

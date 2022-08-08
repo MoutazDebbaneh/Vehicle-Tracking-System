@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:vtracker/config.dart';
 
@@ -52,7 +53,7 @@ class User {
             },
           ),
         )
-        .timeout(const Duration(seconds: 3))
+        .timeout(const Duration(seconds: 20))
         .then((res) {
       if (res.statusCode == 200) {
         return ownUser = User.fromJson(jsonDecode(res.body));
@@ -82,7 +83,7 @@ class User {
             },
           ),
         )
-        .timeout(const Duration(seconds: 3))
+        .timeout(const Duration(seconds: 20))
         .then((res) async {
       if (res.statusCode == 200) {
         try {
